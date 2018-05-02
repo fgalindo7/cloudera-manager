@@ -33,8 +33,8 @@ sudo sysctl vm.swappiness=10
 # Reboot is needed in order to disable selinux
 echo ""
 echo "Your system has been configured."
-echo "To install Cloudera Manager, we need to reboot your system."
-echo -n "Proceed with reboot [Y/N]: "
+echo "To install Cloudera Manager, a system reboot is necessary."
+echo -n "Proceed with reboot [y/n]?: "
 read confirmation
 
 confirmation="${confirmation,,}"

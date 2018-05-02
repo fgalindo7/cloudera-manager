@@ -9,7 +9,7 @@ main() {
 
   user_ans="${user_ans,,}"
 
-  if [[ $user_ans != 'y' ]]; do
+  if [[ $user_ans != 'y' ]]; then
     echo ""
     echo "Execute the following command before installing Cloudera Manager:"
     echo " bash cm_sys_config.sh"
