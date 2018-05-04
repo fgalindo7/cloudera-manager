@@ -57,7 +57,12 @@ main() {
 
     if [[ $confirmation == "y" || $confirmation == "yes" ]]; then
       # Add nodes to the /etc/hosts file
-      sudo su -c 'echo "$* # Added by Devops" >> /etc/hosts' root -- bash "$node_internal_ip $node_fqdn $node_hostname"
+      if [[ $EUID -ne 0 ]]; then
+        sudo su -c 'echo "$* # Added by Devops" >> /etc/hosts' root -- bash "$node_internal_ip $node_fqdn $node_hostname"
+      else
+        echo "$node_internal_ip $node_fqdn $node_hostname # Added by Devops" >> /etc/hosts
+      fi
+
       node_counter=$((node_counter+1))
       nodes=$((nodes-1))
     fi
@@ -69,8 +74,13 @@ main() {
 
 
 function cm_silent_install() {
-  cd /opt; sudo ./cloudera-manager-installer.bin --i-agree-to-all-licenses \
-  --noprompt --noreadme --nooptions
+  if [[ $EUID -ne 0 ]]; then
+    cd /opt; sudo ./cloudera-manager-installer.bin --i-agree-to-all-licenses \
+    --noprompt --noreadme --nooptions
+  else
+    cd /opt; ./cloudera-manager-installer.bin --i-agree-to-all-licenses \
+    --noprompt --noreadme --nooptions
+  fi
 }
 
 
